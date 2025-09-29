@@ -1,0 +1,29 @@
+// Imports from same folder
+@use "mixins" as mixins;
+@use "variables" as variables;
+
+/* == TYPOGRAPHY == */
+
+/**
+* Fonts must be saved int src/scss/assets/fonts folder
+*/
+
+// @font-face {
+//     font-family: "font-name";
+//     src: url("@fonts/font-name.woff") format("woff"),
+//         url("@fonts/font-name.woff2") format("woff2");
+//     font-style: normal;
+// }
+
+@mixin regular {
+    // font-family: "font-name", serif;
+}
+
+body {
+    // Default
+    font-family: sans-serif;
+
+    @include regular;
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+}

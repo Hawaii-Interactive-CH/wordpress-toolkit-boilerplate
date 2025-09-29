@@ -1,0 +1,50 @@
+build_staging:
+  image: node:18
+  variables:
+    NPM_CONFIG_LOGLEVEL: warn
+  stage: deploy
+  script:
+    - apt-get update -y && apt install rsync -y && apt install sshpass -y
+    - npm install
+    - echo "NODE_VERSION=18" >> .env
+    - npm run production
+    - mkdir ~/.ssh && chmod 700 ~/.ssh
+    - ssh-keyscan ${STAGING_HOST} >> ~/.ssh/known_hosts
+    - sshpass -p ${STAGING_PASSWORD} rsync -avz -e ssh dist/ ${STAGING_USER}@${STAGING_HOST}:${STAGING_DIR}
+  only:
+    - staging
+
+build_production:
+  image: node:18
+  variables:
+    NPM_CONFIG_LOGLEVEL: warn
+  stage: deploy
+  script:
+    - apt-get update -y && apt install rsync -y && apt install sshpass -y
+    - npm install
+    - echo "NODE_VERSION=18" >> .env
+    - npm run production
+    - mkdir ~/.ssh && chmod 700 ~/.ssh
+    - ssh-keyscan ${PRODUCTION_HOST} >> ~/.ssh/known_hosts
+    - sshpass -p ${PRODUCTION_PASSWORD} rsync -avz -e ssh dist/ ${PRODUCTION_USER}@${PRODUCTION_HOST}:${PRODUCTION_DIR}
+  only:
+    - production
+
+build_documentation:
+  image: php:8.0
+  stage: build
+  script:
+    - apt-get update -y && apt install && apt-get install wget rsync sshpass -y
+    - wget https://phpdoc.org/phpDocumentor.phar
+    - chmod +x phpDocumentor.phar
+    - mv phpDocumentor.phar /usr/local/bin/phpDocumentor
+    - phpDocumentor -d .
+    - mkdir ~/.ssh && chmod 700 ~/.ssh
+    - ssh-keyscan ${DOCUMENTATION_HOST} >> ~/.ssh/known_hosts
+    - sshpass -p ${DOCUMENTATION_PASSWORD} rsync -avz -e ssh build/docs/ ${DOCUMENTATION_USER}@${DOCUMENTATION_HOST}:${DOCUMENTATION_DIR}
+  artifacts:
+    paths:
+      - docs/
+    expire_in: 5 mins
+  only:
+    - documentation

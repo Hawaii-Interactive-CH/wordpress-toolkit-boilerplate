@@ -1,0 +1,23 @@
+// imports from another folder
+@use "../base" as base;
+
+/* == HEADER == */
+
+header.header--horizontal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #logo {
+        svg {
+            width: 64px;
+        }
+    }
+}

@@ -1,0 +1,27 @@
+/* BASE */
+@use "partials/base" as base;
+/* UI */
+@use "partials/ui" as ui;
+/* BLOCKS */
+@use "partials/blocks" as blocks;
+/* LAYOUT */
+@use "partials/layout" as layout;
+/* PAGES */
+@use "partials/pages" as pages;
+/*VENDORS*/
+@use "partials/vendor" as vendor;
+
+// DOCUMENTATION
+// To use the different variables and mixins in your project, you can import the folder base and use the variables and mixins from there.
+
+// Example:
+// imports from another folder
+// @use "../base" as base;
+// @use "../ui" as ui;
+
+// .btn-primary {
+//     @include ui.button(base.$white, base.$black, none, 5px, 10px 20px)
+//   }
+// The button is using the button mixin from the ui folder and the variables from the base folder.
+
+// To use variables, mixins or function from the same folder, you have to @use the file directly (see example in ROOT file).

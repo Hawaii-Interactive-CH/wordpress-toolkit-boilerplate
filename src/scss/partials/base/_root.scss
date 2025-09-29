@@ -1,0 +1,27 @@
+/* == ROOT == */
+// Imports from same folder
+@use "mixins" as mixins;
+@use "variables" as variables;
+
+:root {
+    // Containers
+    --header-height: 50px;
+
+    // Colors
+    --color-main: #0077ac;
+    --color-second: #42c0ec;
+    --color-white: #fff;
+    --color-black: #383838;
+
+    // Margins
+    --margin: 20px;
+
+    // Font
+    --font-size: 20px;
+    --line-height: 1.5;
+
+    // use a mixin for media queries and variables for sizes
+    @include mixins.bp(variables.$medium) {
+        --font-size: 18px;
+    }
+}

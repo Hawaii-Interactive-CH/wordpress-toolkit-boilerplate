@@ -1,0 +1,16 @@
+// imports from another folder
+@use "../base" as base;
+
+/* == MAIN == */
+
+main {
+    padding: var(--margin);
+    // if fixed header
+    margin-top: var(--header-height);
+    @include base.bp(base.$large, min) {
+        padding: calc(var(--margin) * 2);
+    }
+    @include base.bp(base.$tablet) {
+        padding: calc(var(--margin) / 2);
+    }
+}

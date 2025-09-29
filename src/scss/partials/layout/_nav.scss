@@ -1,0 +1,38 @@
+// imports from another folder
+@use "../base" as base;
+@use "../ui" as ui; // for btns mixin for example
+
+/* == NAVIGATION == */
+
+nav.main-nav {
+    & > ul {
+        display: flex;
+        & > li {
+            a {
+                display: inline-block;
+                padding: 0.5em 1em;
+            }
+            // if submenu
+            & > ul.sub-menu {
+                li {
+                    a {
+                        // rules...
+                    }
+                }
+            }
+        }
+    }
+    @include base.bp(base.$tablet) {
+        position: fixed;
+        top: 2em;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        transform: translate3d(0, -100%, 0);
+        transition: all 0.3s base.$ease;
+        .nav_open & {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+}

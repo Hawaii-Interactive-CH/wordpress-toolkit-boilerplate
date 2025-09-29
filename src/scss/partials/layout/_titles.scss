@@ -1,0 +1,16 @@
+// imports from another folder
+@use "../base" as base;
+
+/* == TITLES == */
+
+h1,
+h2,
+h3 {
+    margin: 0;
+    line-height: 1.1;
+}
+
+h1 {
+    /* example of @forward / @use */
+    color: base.$color-main;
+}

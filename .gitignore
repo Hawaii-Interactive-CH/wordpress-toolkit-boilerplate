@@ -1,0 +1,18 @@
+# node dependency directories
+node_modules/
+
+# toolkit generated assets
+toolkit/public/
+
+# others
+twenty*/
+**/.DS_Store
+/vendor/
+
+.phpdoc
+
+build
+
+.env
+.dev
+.vscode/settings.json

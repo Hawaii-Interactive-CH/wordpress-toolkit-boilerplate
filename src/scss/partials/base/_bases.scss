@@ -1,0 +1,69 @@
+// Imports from same folder
+@use "mixins" as mixins;
+
+/* == BASE == */
+
+html {
+    box-sizing: border-box;
+    --scroll-behavior: smooth;
+    scroll-behavior: var(--scroll-behavior);
+    body {
+        margin: 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        --scroll-behavior: auto;
+    }
+}
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul,
+ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+.ofi-image {
+    @include mixins.ofi;
+}
+
+span.anchor {
+    display: block;
+    position: relative;
+    top: -130px;
+    visibility: hidden;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.hidden {
+    display: none;
+}
