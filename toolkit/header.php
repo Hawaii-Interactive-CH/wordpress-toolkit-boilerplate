@@ -17,6 +17,9 @@ namespace Toolkit;
       "color" => "#ffffff",
   ]) ?>
 
+  <!-- SEO -->
+  <?= render_partial("head/seo") ?>
+
   <!-- JSON-LD -->
   <?= render_partial("head/jsonld") ?>
 

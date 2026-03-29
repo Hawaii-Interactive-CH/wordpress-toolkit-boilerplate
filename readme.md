@@ -1,25 +1,5 @@
 # WordPress Toolkit
 
-## Responsables du projet
-
-Nom Prénom
-<email@example.com>
-+410000000
-Rôle de la personne
-
-## Contacts
-
-_Ajouter ici toutes les personnes en relation avec le projet_
-
-Nom Prénom
-<email@example.com>
-+410000000
-Rôle de la personne
-
-## Accès
-
-_Ajouter ici les URLs d'accès au projet (staging, production)_
-
 ## Documentation technique
 
 ### Prérequis
@@ -27,8 +7,6 @@ _Ajouter ici les URLs d'accès au projet (staging, production)_
 - PHP 8.1
 - Dernière version de Wordpress
 - asdf, asdf-nodejs : https://atoz.hawaii.do/development/asdf/
-- Docker (optionnel, mais recommandé) : https://www.docker.com/products/docker-desktop
-- Make (optionnel, mais recommandé) : https://www.gnu.org/software/make/
 
 ### Installation
 
@@ -65,7 +43,7 @@ A noter que le projet utilise vitejs pour compiler les assets. Il est possible d
 
 ### Developpement
 
-Pour que les assets et `vite` ajoute le `script` dans le head en mode development, il faut ajouter dans le `wp-config.php`:
+Local WP compile automatiquement vite en mode dev. Pour les autres environements, il faut ajouter dans le `wp-config.php`:
 
 ```php
 define( 'WP_DEBUG', true );
@@ -172,3 +150,48 @@ Le service est inactif quand le manifeste Vite n'existe pas (i.e. `npm run dev`)
 Ajouter ou retirer des imports dans `src/scss/critical.scss`. Règle générale : n'inclure que ce qui est visible **avant le premier scroll**.
 
 **Fichier :** `toolkit/utils/CriticalCSSService.php`
+
+---
+
+### SEO — Open Graph, Twitter Card & Canonical
+
+Le partiel `toolkit/partials/head/seo.php` injecte automatiquement tous les méta-tags SEO dans le `<head>`.
+
+#### Tags générés
+
+| Tag | Valeur |
+|-----|--------|
+| `<meta name="description">` | Extrait (30 mots) → tagline du site |
+| `<link rel="canonical">` | `$model->link()` ou `get_permalink()` |
+| `og:type` | `article` sur les posts, `website` ailleurs |
+| `og:title` | Titre de la page |
+| `og:description` | Extrait |
+| `og:url` | URL canonique |
+| `og:site_name` | Nom du site WordPress |
+| `og:locale` | Langue courante (`fr_FR`, `en_US`, …) |
+| `og:image` + dimensions + type | Miniature en taille `image-l` (1280 px) |
+| `article:published_time` | Date ISO 8601 (posts uniquement) |
+| `article:modified_time` | Date de modification ISO 8601 (posts uniquement) |
+| `twitter:card` | `summary_large_image` si miniature, sinon `summary` |
+| `twitter:title` / `description` / `image` | Identiques aux valeurs OG |
+| `<meta name="robots" content="noindex, nofollow">` | Uniquement sur les posts protégés par mot de passe |
+
+#### Utilisation
+
+Le partiel est appelé automatiquement dans `header.php` sans modèle — il se rabat sur les fonctions WordPress core :
+
+```php
+<?= render_partial('head/seo') ?>
+```
+
+Pour passer un modèle typé depuis un template (excerpt plus précis, données ACF) :
+
+```php
+<?php Page::current(function (Page $model) { ?>
+    <?= render_partial('head/seo', ['model' => $model]) ?>
+<?php }); ?>
+```
+
+Quand `$model` est fourni, le partiel utilise `$model->excerpt(30)`, `$model->link()`, et `$model->thumbnail()`. Sans modèle, il résout les données via `get_queried_object_id()` et les fonctions WP standard — ce qui couvre les archives, la page d'accueil et les pages de recherche.
+
+**Fichier :** `toolkit/partials/head/seo.php`
