@@ -1,0 +1,16 @@
+// CRITICAL CSS
+// Inlined in <head> by CriticalCSSService to eliminate render-blocking CSS.
+// Only include styles needed before first paint — keep this file small.
+
+// Design tokens (:root custom properties)
+@use "partials/base/root";
+
+// Resets & base rules
+@use "partials/base/reset";
+@use "partials/base/bases";
+@use "partials/base/typography";
+
+// Layout skeleton visible above the fold
+@use "partials/layout/containers";
+@use "partials/layout/header";
+@use "partials/layout/nav";

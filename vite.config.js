@@ -48,6 +48,7 @@ export default defineConfig({
             input: {
                 app: resolve(__dirname, "./src/javascript/app.js"),
                 blocks: resolve(__dirname, "./src/scss/blocks.scss"),
+                critical: resolve(__dirname, "./src/scss/critical.scss"),
             },
             output: {
                 entryFileNames: "js/[name].[hash].js",

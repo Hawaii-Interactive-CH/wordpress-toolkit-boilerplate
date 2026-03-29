@@ -62,6 +62,9 @@ spl_autoload_register('Toolkit\\toolkit_autoloader');
 // Customizer: runtime CSS custom properties
 \Toolkit\utils\CustomizerService::register();
 
+// Performance: inline critical CSS, defer main stylesheet
+\Toolkit\utils\CriticalCSSService::register();
+
 // register menu
 register_nav_menus([
     "main_menu" => "Menu principal",
