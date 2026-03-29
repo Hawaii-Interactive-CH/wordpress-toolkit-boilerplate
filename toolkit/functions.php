@@ -59,6 +59,9 @@ spl_autoload_register('Toolkit\\toolkit_autoloader');
     }
 }
 
+// Customizer: runtime CSS custom properties
+\Toolkit\utils\CustomizerService::register();
+
 // register menu
 register_nav_menus([
     "main_menu" => "Menu principal",
