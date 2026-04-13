@@ -1,9 +1,8 @@
-# Bintintan Theme — Claude Context
+# wordpress-toolkit-boilerplate — Claude Context
 
 This is a WordPress theme built on top of the **WordPress Toolkit Plugin** (`wordpress-toolkit-plugin-main`). The plugin provides the model system, query builder, image optimization, and service infrastructure. The theme provides templates, partials, assets, and project-specific models.
 
 **Plugin path:** `/wp-content/plugins/wordpress-toolkit-plugin-main`
-**Theme path:** `/wp-content/themes/bintintan`
 **Shared PHP namespace:** `Toolkit\`
 
 ---
