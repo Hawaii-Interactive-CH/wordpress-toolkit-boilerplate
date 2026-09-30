@@ -14,18 +14,18 @@ class CustomizerService
     {
         return [
             // Colors
-            'color_main'     => ['prop' => '--color-main',     'label' => 'Primary Color',   'section' => 'bintintan_colors',     'type' => 'color',  'default' => '#0077ac'],
-            'color_second'   => ['prop' => '--color-second',   'label' => 'Secondary Color', 'section' => 'bintintan_colors',     'type' => 'color',  'default' => '#42c0ec'],
-            'color_tertiary' => ['prop' => '--color-tertiary', 'label' => 'Tertiary Color',  'section' => 'bintintan_colors',     'type' => 'color',  'default' => '#005580'],
-            'color_neutral'  => ['prop' => '--color-neutral',  'label' => 'Neutral Color',   'section' => 'bintintan_colors',     'type' => 'color',  'default' => '#6b7280'],
-            'color_white'    => ['prop' => '--color-white',    'label' => 'Light Color',     'section' => 'bintintan_colors',     'type' => 'color',  'default' => '#ffffff'],
-            'color_black'    => ['prop' => '--color-black',    'label' => 'Dark Color',      'section' => 'bintintan_colors',     'type' => 'color',  'default' => '#383838'],
+            'color_main'     => ['prop' => '--color-main',     'label' => 'Primary Color',   'section' => 'toolkit_colors',     'type' => 'color',  'default' => '#0077ac'],
+            'color_second'   => ['prop' => '--color-second',   'label' => 'Secondary Color', 'section' => 'toolkit_colors',     'type' => 'color',  'default' => '#42c0ec'],
+            'color_tertiary' => ['prop' => '--color-tertiary', 'label' => 'Tertiary Color',  'section' => 'toolkit_colors',     'type' => 'color',  'default' => '#005580'],
+            'color_neutral'  => ['prop' => '--color-neutral',  'label' => 'Neutral Color',   'section' => 'toolkit_colors',     'type' => 'color',  'default' => '#6b7280'],
+            'color_white'    => ['prop' => '--color-white',    'label' => 'Light Color',     'section' => 'toolkit_colors',     'type' => 'color',  'default' => '#ffffff'],
+            'color_black'    => ['prop' => '--color-black',    'label' => 'Dark Color',      'section' => 'toolkit_colors',     'type' => 'color',  'default' => '#383838'],
             // Typography
-            'font_size'      => ['prop' => '--font-size',      'label' => 'Base Font Size (px)',  'section' => 'bintintan_typography', 'type' => 'number', 'default' => '20',   'unit' => 'px', 'min' => 14,  'max' => 28,   'step' => 1],
-            'line_height'    => ['prop' => '--line-height',    'label' => 'Line Height',          'section' => 'bintintan_typography', 'type' => 'number', 'default' => '1.26', 'unit' => '',   'min' => 1.0, 'max' => 2.0,  'step' => 0.01],
+            'font_size'      => ['prop' => '--font-size',      'label' => 'Base Font Size (px)',  'section' => 'toolkit_typography', 'type' => 'number', 'default' => '20',   'unit' => 'px', 'min' => 14,  'max' => 28,   'step' => 1],
+            'line_height'    => ['prop' => '--line-height',    'label' => 'Line Height',          'section' => 'toolkit_typography', 'type' => 'number', 'default' => '1.26', 'unit' => '',   'min' => 1.0, 'max' => 2.0,  'step' => 0.01],
             // Layout
-            'global_grid'    => ['prop' => '--global-grid',    'label' => 'Container Max Width (px)', 'section' => 'bintintan_layout', 'type' => 'number', 'default' => '1280', 'unit' => 'px', 'min' => 960, 'max' => 1920, 'step' => 10],
-            'global_margin'  => ['prop' => '--global-margin',  'label' => 'Base Spacing (px)',        'section' => 'bintintan_layout', 'type' => 'number', 'default' => '20',   'unit' => 'px', 'min' => 10,  'max' => 60,   'step' => 1],
+            'global_grid'    => ['prop' => '--global-grid',    'label' => 'Container Max Width (px)', 'section' => 'toolkit_layout', 'type' => 'number', 'default' => '1280', 'unit' => 'px', 'min' => 960, 'max' => 1920, 'step' => 10],
+            'global_margin'  => ['prop' => '--global-margin',  'label' => 'Base Spacing (px)',        'section' => 'toolkit_layout', 'type' => 'number', 'default' => '20',   'unit' => 'px', 'min' => 10,  'max' => 60,   'step' => 1],
         ];
     }
 
@@ -38,24 +38,24 @@ class CustomizerService
 
     public static function add_settings(\WP_Customize_Manager $wp_customize): void
     {
-        $wp_customize->add_panel('bintintan_design', [
-            'title'    => __('Theme Design', 'bintintan'),
+        $wp_customize->add_panel('toolkit_design', [
+            'title'    => __('Theme Design', 'toolkit'),
             'priority' => 30,
         ]);
 
-        $wp_customize->add_section('bintintan_colors', [
-            'title' => __('Colors', 'bintintan'),
-            'panel' => 'bintintan_design',
+        $wp_customize->add_section('toolkit_colors', [
+            'title' => __('Colors', 'toolkit'),
+            'panel' => 'toolkit_design',
         ]);
 
-        $wp_customize->add_section('bintintan_typography', [
-            'title' => __('Typography', 'bintintan'),
-            'panel' => 'bintintan_design',
+        $wp_customize->add_section('toolkit_typography', [
+            'title' => __('Typography', 'toolkit'),
+            'panel' => 'toolkit_design',
         ]);
 
-        $wp_customize->add_section('bintintan_layout', [
-            'title' => __('Layout', 'bintintan'),
-            'panel' => 'bintintan_design',
+        $wp_customize->add_section('toolkit_layout', [
+            'title' => __('Layout', 'toolkit'),
+            'panel' => 'toolkit_design',
         ]);
 
         foreach (self::settings() as $key => $setting) {
@@ -63,7 +63,7 @@ class CustomizerService
                 ? 'sanitize_hex_color'
                 : fn($val) => self::sanitize_number($val, $setting);
 
-            $wp_customize->add_setting("bintintan_{$key}", [
+            $wp_customize->add_setting("toolkit_{$key}", [
                 'default'           => $setting['default'],
                 'sanitize_callback' => $sanitize,
                 'transport'         => 'postMessage',
@@ -71,14 +71,14 @@ class CustomizerService
 
             if ($setting['type'] === 'color') {
                 $wp_customize->add_control(
-                    new \WP_Customize_Color_Control($wp_customize, "bintintan_{$key}", [
-                        'label'   => __($setting['label'], 'bintintan'),
+                    new \WP_Customize_Color_Control($wp_customize, "toolkit_{$key}", [
+                        'label'   => __($setting['label'], 'toolkit'),
                         'section' => $setting['section'],
                     ])
                 );
             } else {
-                $wp_customize->add_control("bintintan_{$key}", [
-                    'label'       => __($setting['label'], 'bintintan'),
+                $wp_customize->add_control("toolkit_{$key}", [
+                    'label'       => __($setting['label'], 'toolkit'),
                     'section'     => $setting['section'],
                     'type'        => 'number',
                     'input_attrs' => [
@@ -100,7 +100,7 @@ class CustomizerService
         $lines = [];
 
         foreach (self::settings() as $key => $setting) {
-            $value = get_theme_mod("bintintan_{$key}", $setting['default']);
+            $value = get_theme_mod("toolkit_{$key}", $setting['default']);
 
             if ($value === '' || $value === null) {
                 continue;
@@ -114,7 +114,7 @@ class CustomizerService
             return;
         }
 
-        echo "\n<style id=\"bintintan-theme-vars\">\n:root {\n"
+        echo "\n<style id=\"toolkit-theme-vars\">\n:root {\n"
             . implode("\n", $lines)
             . "\n}\n</style>\n";
     }
@@ -130,7 +130,7 @@ class CustomizerService
         foreach (self::settings() as $key => $setting) {
             $prop = esc_js($setting['prop']);
             $unit = esc_js($setting['unit'] ?? '');
-            $js  .= "wp.customize('bintintan_{$key}',function(v){"
+            $js  .= "wp.customize('toolkit_{$key}',function(v){"
                   . "v.bind(function(val){"
                   . "document.documentElement.style.setProperty('{$prop}',val+'{$unit}');"
                   . "});"
