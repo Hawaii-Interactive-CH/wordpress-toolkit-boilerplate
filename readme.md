@@ -136,7 +136,9 @@ Les design tokens sont modifiables en temps réel via **Apparence → Personnali
 - **Typography** — taille de police de base, hauteur de ligne
 - **Layout** — largeur max du conteneur, espacement de base
 
-Les valeurs sont sauvegardées en base de données (`theme_mods`) et injectées comme `<style>:root { ... }</style>` dans le `<head>` à la priorité 99, ce qui prend le dessus sur les valeurs compilées dans le CSS.
+Les valeurs sont sauvegardées en base de données (`theme_mods`). Seules les valeurs modifiées sont injectées comme `<style>:root { ... }</style>` dans le `<head>` à la priorité 99, ce qui prend le dessus sur les valeurs compilées dans le CSS. Les valeurs par défaut restent celles du SCSS, y compris celles qui changent selon le breakpoint (`--font-size`).
+
+Les couleurs alimentent aussi la palette de l'éditeur de blocs (`theme.json`, filtre `wp_theme_json_data_theme`), et toutes les variables sont injectées dans l'éditeur.
 
 La prévisualisation est instantanée (via `postMessage`) — aucun rechargement de la page n'est nécessaire.
 

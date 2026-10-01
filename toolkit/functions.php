@@ -91,6 +91,13 @@ require_once TOOLKIT_ACTIVE_THEME_PATH . '/routes/api.php';
 \Toolkit\utils\CriticalCSSService::register();
 
 // register menu
+// Block styles in the editor canvas: the plugin enqueues public/css/blocks.css with
+// enqueue_block_editor_assets, which does not reach the iframed editor
+add_action("after_setup_theme", function () {
+    add_theme_support("editor-styles");
+    add_editor_style("public/css/blocks.css");
+});
+
 add_action("init", function () {
     load_theme_textdomain("toolkit", TOOLKIT_ACTIVE_THEME_PATH . "/languages");
 

@@ -34,6 +34,8 @@ class CustomizerService
         add_action('customize_register',     [self::class, 'add_settings']);
         add_action('wp_head',                [self::class, 'output_css'], 99);
         add_action('customize_preview_init', [self::class, 'enqueue_preview_js']);
+        add_filter('block_editor_settings_all', [self::class, 'editor_css']);
+        add_filter('wp_theme_json_data_theme',  [self::class, 'theme_json_palette']);
     }
 
     public static function add_settings(\WP_Customize_Manager $wp_customize): void
@@ -92,10 +94,13 @@ class CustomizerService
     }
 
     /**
-     * Outputs a <style> block at wp_head priority 99 with all CSS custom properties.
-     * This overrides the compiled SCSS defaults at runtime.
+     * Returns the CSS custom property declarations for the saved theme mods.
+     *
+     * @param bool $modified_only Skip values equal to their default, so the compiled
+     *                            SCSS (e.g. the smaller --font-size under $medium) still applies.
+     * @return string[]
      */
-    public static function output_css(): void
+    private static function declarations(bool $modified_only): array
     {
         $lines = [];
 
@@ -106,17 +111,71 @@ class CustomizerService
                 continue;
             }
 
+            if ($modified_only && (string) $value === (string) $setting['default']) {
+                continue;
+            }
+
             $unit    = $setting['unit'] ?? '';
-            $lines[] = "    {$setting['prop']}: {$value}{$unit};";
+            $lines[] = "{$setting['prop']}: {$value}{$unit};";
         }
+
+        return $lines;
+    }
+
+    /**
+     * Outputs a <style> block at wp_head priority 99 with the customized CSS custom properties.
+     * This overrides the compiled SCSS defaults at runtime.
+     */
+    public static function output_css(): void
+    {
+        $lines = self::declarations(true);
 
         if (empty($lines)) {
             return;
         }
 
-        echo "\n<style id=\"toolkit-theme-vars\">\n:root {\n"
-            . implode("\n", $lines)
+        echo "\n<style id=\"toolkit-theme-vars\">\n:root {\n    "
+            . implode("\n    ", $lines)
             . "\n}\n</style>\n";
+    }
+
+    /**
+     * Adds every CSS custom property to the block editor styles. The editor does not
+     * load the compiled SCSS, so it needs all values, not only the customized ones.
+     */
+    public static function editor_css(array $settings): array
+    {
+        $settings['styles'][] = [
+            'css' => ':root { ' . implode(' ', self::declarations(false)) . ' }',
+        ];
+
+        return $settings;
+    }
+
+    /**
+     * Builds the block editor color palette from the Customizer colors, so the
+     * presets (has-main-color, --wp--preset--color--main…) follow the theme mods.
+     */
+    public static function theme_json_palette(\WP_Theme_JSON_Data $theme_json): \WP_Theme_JSON_Data
+    {
+        $palette = [];
+
+        foreach (self::settings() as $key => $setting) {
+            if ($setting['type'] !== 'color') {
+                continue;
+            }
+
+            $palette[] = [
+                'slug'  => str_replace('color_', '', $key),
+                'name'  => __($setting['label'], 'toolkit'),
+                'color' => get_theme_mod("toolkit_{$key}", $setting['default']),
+            ];
+        }
+
+        return $theme_json->update_with([
+            'version'  => 3,
+            'settings' => ['color' => ['palette' => $palette]],
+        ]);
     }
 
     /**

@@ -498,6 +498,15 @@ Register components in the `componentImports` map of `main.jsx` (or `vue/main.js
 
 ---
 
+## Block Editor
+
+- `toolkit/theme.json` restricts the editor to the theme's design: layout widths (`contentSize` 860px, `wideSize` 1280px), font sizes, no default palette, gradients or custom colors. Base typography uses the same CSS variables as the theme.
+- The color palette is not in `theme.json`: `CustomizerService::theme_json_palette()` builds it from the Customizer colors, so `has-main-color` and `--wp--preset--color--main` follow the theme mods.
+- `CustomizerService::editor_css()` adds every `--color-*`, `--font-size`… variable to the editor canvas.
+- Block styles live in `src/scss/partials/blocks/` (one file per block, forwarded from `index.scss`). They are compiled into `app.css` (front) and `blocks.css` (editor, loaded with `add_editor_style`). In block partials, `@use "../base/variables"` and `@use "../base/mixins"` only: `@use "../base"` would also emit the reset and `:root` rules into `blocks.css`, which the plugin loads on the whole editor screen.
+
+---
+
 ## SCSS Structure
 
 ```
