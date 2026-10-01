@@ -8,12 +8,13 @@
 - Dernière version de Wordpress
 - asdf, asdf-nodejs : https://atoz.hawaii.do/development/asdf/ (la version de Node est fixée dans `.tool-versions`)
 - Composer
+- Plugins WordPress : [wordpress-toolkit-plugin](https://github.com/Hawaii-Interactive-CH/wordpress-toolkit-plugin) (obligatoire) et ACF Pro (blocs, pages d'options, champs)
 
 ### Installation
 
 Lancer un serveur php contenant wordpress via Local by Flywheel ou MAMP.
 
-Il faut installer le plugin [wordpress-toolkit-plugin](https://github.com/Hawaii-Interactive-CH/wordpress-toolkit-plugin) dans le dossier `./plugins` ou l'upload via l'admin Wordpress et l'activer dans l'administration de Wordpress. Ce plugin permet de charger les fonctionnalités de base du thème.
+Il faut installer le plugin [wordpress-toolkit-plugin](https://github.com/Hawaii-Interactive-CH/wordpress-toolkit-plugin) dans le dossier `wp-content/plugins` ou l'upload via l'admin Wordpress et l'activer dans l'administration de Wordpress. Ce plugin permet de charger les fonctionnalités de base du thème : sans lui, le site affiche un message d'erreur.
 
 #### Nouveau projet
 
@@ -68,8 +69,11 @@ npm run init -- --name="Fondation École" --description="Site de la fondation" -
 
 ### Commandes
 
-- `npm run watch ou dev` : Compile les assets et recharge le browser quand les fichiers changent
-- `npm run production ou build` : Compile les assets en mode production (Exectuer cette commande avant de publier un site)
+- `npm run init` : Prépare un nouveau projet (voir [Script d'initialisation](#script-dinitialisation))
+- `npm run watch ou dev` : Lance le serveur Vite et recharge le browser quand les fichiers changent
+- `npm run production ou build` : Compile les assets en mode production dans `toolkit/public/` (exécuter cette commande avant de publier un site)
+- `npm run format` : Formate les fichiers de `src/` avec Prettier
+- `composer lint`, `composer phpstan`, `npm run test:smoke` : voir [Tests](#tests)
 
 A noter que le projet utilise vitejs pour compiler les assets. Il est possible de modifier le fichier `vite.config.js` pour ajouter des fonctionnalités supplémentaires.
 
@@ -117,9 +121,48 @@ Pour récupérer la dernière version du plugin après un changement sur GitHub 
 
 Ces mêmes dépendances servent à PHPStan (voir [Tests](#tests)). `vendor/` n'est pas versionné.
 
-#### Custom Post Type
+#### Modèles : Custom Post Types, taxonomies, blocs, pages d'options
 
-Pour créer un nouveau CPT, il faut créer un fichier dans le dossier `./toolkit/models/custom` ou via le générateur de CPT intégré au plugin.
+Les modèles du projet sont des classes PHP dans `toolkit/models/custom/` (exemples fournis : `Article`, `ArticleCategory`, `BlockHero`, `SiteOptions`). Ils s'écrivent à la main ou avec les commandes Claude Code `/toolkit:create-cpt`, `/toolkit:create-taxonomy`, `/toolkit:create-block` et `/toolkit:create-option-page` (voir `CLAUDE.md`).
+
+Un modèle n'est chargé que s'il est **coché dans Toolkit → Models** dans l'administration WordPress.
+
+Les groupes de champs ACF sont versionnés en JSON dans `toolkit/acf-json/` : ACF les charge et les met à jour automatiquement quand ils sont modifiés dans l'admin.
+
+#### Blocs ACF
+
+Un bloc se compose de trois fichiers :
+
+- la classe : `toolkit/models/custom/Block{Nom}.php` (type, titre, icône…) ;
+- le template : `toolkit/partials/blocks/{block-type}.php`, où `$block` donne accès aux champs (`$block->acf('title')`, `$block->acf_media(…)`) ;
+- les styles : `src/scss/partials/blocks/_{block-type}.scss`, ajouté dans `src/scss/partials/blocks/index.scss`.
+
+Les styles de blocs sont compilés dans `app.css` (site) et dans `blocks.css` (éditeur). Dans ces fichiers, importer uniquement `../base/variables` et `../base/mixins` (pas `../base`, qui ajouterait le reset et `:root` dans `blocks.css`, chargé sur tout l'écran d'édition). Voir `_block-hero.scss`.
+
+#### Éditeur de blocs (`theme.json`)
+
+`toolkit/theme.json` aligne l'éditeur sur le design du thème : largeurs de contenu (860 px) et large (1280 px), tailles de police, pas de palette WordPress par défaut, ni dégradés ni couleurs libres. La palette de couleurs est générée à partir du [Customizer](#customizer-wordpress).
+
+#### Composants React / Vue
+
+React est chargé uniquement sur les pages qui contiennent un composant. Pour en ajouter un :
+
+1. Créer le composant dans `src/javascript/react/components/`.
+2. L'enregistrer dans `componentImports` de `src/javascript/react/main.jsx`, avec l'id de son élément racine.
+3. Placer l'élément racine dans un template : `<div id="mon-composant" data-titre="…"></div>`. Les attributs `data-*` sont passés au composant dans la prop `data`.
+
+Vue fonctionne de la même façon (`src/javascript/vue/main.js`), une fois décommenté l'import dans `src/javascript/app.js`.
+
+#### Traductions
+
+Le text domain du thème est `toolkit`. Les chaînes du code sont en anglais ; les traductions sont dans `toolkit/languages/` (`toolkit.pot`, `fr_FR.po` / `fr_FR.mo`). Après avoir ajouté des chaînes :
+
+```bash
+wp i18n make-pot toolkit toolkit/languages/toolkit.pot --domain=toolkit --exclude=public,static,acf-json --skip-js
+wp i18n update-po toolkit/languages/toolkit.pot toolkit/languages/fr_FR.po
+# traduire les nouvelles chaînes dans fr_FR.po (Poedit ou éditeur de texte), puis :
+wp i18n make-mo toolkit/languages/fr_FR.po
+```
 
 ---
 
@@ -211,7 +254,7 @@ Le thème implémente une stratégie de **CSS critique** pour éliminer le CSS b
 
 #### En mode développement
 
-Le service est inactif quand le manifeste Vite n'existe pas (i.e. `npm run dev`). Vite injecte ses propres assets via le dev server — aucune modification nécessaire.
+Le service est inactif quand les assets viennent du serveur Vite (`npm run dev`), même si un ancien build existe dans `toolkit/public/`, ainsi que lorsqu'aucun build n'existe. Vite injecte ses propres assets via le dev server — aucune modification nécessaire.
 
 #### Modifier le CSS critique
 
@@ -221,9 +264,16 @@ Ajouter ou retirer des imports dans `src/scss/critical.scss`. Règle générale 
 
 ---
 
-### SEO — Open Graph, Twitter Card & Canonical
+### SEO — Open Graph, Twitter Card, Canonical & JSON-LD
 
-Le partiel `toolkit/partials/head/seo.php` injecte automatiquement tous les méta-tags SEO dans le `<head>`.
+Le partiel `toolkit/partials/head/seo.php` injecte automatiquement tous les méta-tags SEO dans le `<head>`, et `toolkit/partials/head/jsonld.php` les données structurées.
+
+**Avec un plugin SEO** (Yoast SEO, Rank Math, SEOPress, All in One SEO, The SEO Framework), ces deux partiels sont désactivés pour éviter les doublons : c'est le plugin qui gère ces balises. Pour forcer un comportement :
+
+```php
+add_filter('toolkit_seo_plugin_active', '__return_true');  // désactiver les partiels du thème
+add_filter('toolkit_seo_plugin_active', '__return_false'); // les garder malgré un plugin SEO
+```
 
 #### Tags générés
 
@@ -231,35 +281,31 @@ Le partiel `toolkit/partials/head/seo.php` injecte automatiquement tous les mét
 |-----|--------|
 | `<meta name="description">` | Extrait (30 mots) → tagline du site |
 | `<link rel="canonical">` | `$model->link()` ou `get_permalink()` |
-| `og:type` | `article` sur les posts, `website` ailleurs |
+| `og:type` | `article` sur les contenus seuls (articles, pages, CPT), `website` ailleurs |
 | `og:title` | Titre de la page |
 | `og:description` | Extrait |
 | `og:url` | URL canonique |
 | `og:site_name` | Nom du site WordPress |
 | `og:locale` | Langue courante (`fr_FR`, `en_US`, …) |
 | `og:image` + dimensions + type | Miniature en taille `image-l` (1280 px) |
-| `article:published_time` | Date ISO 8601 (posts uniquement) |
-| `article:modified_time` | Date de modification ISO 8601 (posts uniquement) |
+| `article:published_time` | Date ISO 8601 (contenus seuls uniquement) |
+| `article:modified_time` | Date de modification ISO 8601 (contenus seuls uniquement) |
 | `twitter:card` | `summary_large_image` si miniature, sinon `summary` |
 | `twitter:title` / `description` / `image` | Identiques aux valeurs OG |
 | `<meta name="robots" content="noindex, nofollow">` | Uniquement sur les posts protégés par mot de passe |
 
 #### Utilisation
 
-Le partiel est appelé automatiquement dans `header.php` sans modèle — il se rabat sur les fonctions WordPress core :
+Le partiel est appelé automatiquement dans `header.php`, sans modèle : il résout les données via `get_queried_object_id()` et les fonctions WordPress, ce qui couvre les pages, les articles, les archives, la page d'accueil et la recherche.
 
 ```php
 <?= render_partial('head/seo') ?>
 ```
 
-Pour passer un modèle typé depuis un template (excerpt plus précis, données ACF) :
+Il accepte aussi un `$model` optionnel (`render_partial('head/seo', ['model' => $model])`), qui utilise alors `$model->excerpt(30)` et `$model->link()`. Ne l'appeler ainsi que depuis le `<head>` (par exemple dans un `header.php` personnalisé) : appelé dans un template, il afficherait les balises dans le `<body>`, en plus de celles du header.
 
-```php
-<?php Page::current(function (Page $model) { ?>
-    <?= render_partial('head/seo', ['model' => $model]) ?>
-<?php }); ?>
-```
+#### JSON-LD
 
-Quand `$model` est fourni, le partiel utilise `$model->excerpt(30)`, `$model->link()`, et `$model->thumbnail()`. Sans modèle, il résout les données via `get_queried_object_id()` et les fonctions WP standard — ce qui couvre les archives, la page d'accueil et les pages de recherche.
+`jsonld.php` génère un graphe schema.org : `Organization` et `WebSite` (avec la recherche) sur toutes les pages, plus `Article` (articles et CPT `article`) ou `WebPage` sur les contenus seuls. Le logo de l'organisation est l'icône du site (Réglages → Général) si elle est définie.
 
-**Fichier :** `toolkit/partials/head/seo.php`
+**Fichiers :** `toolkit/partials/head/seo.php`, `toolkit/partials/head/jsonld.php`
