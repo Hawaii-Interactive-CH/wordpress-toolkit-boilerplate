@@ -3,8 +3,8 @@ parameters:
     paths:
         - toolkit
     excludePaths:
-        - toolkit/public
-        - toolkit/static
+        - toolkit/public (?)
+        - toolkit/static (?)
     scanFiles:
         - vendor/php-stubs/acf-pro-stubs/acf-pro-stubs.php
         - vendor/hawaii-interactive/wordpress-toolkit-plugin/wordpress-toolkit-plugin.php
