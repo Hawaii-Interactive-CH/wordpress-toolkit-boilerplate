@@ -1,0 +1,14 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/wp-env.json",
+    "core": null,
+    "phpVersion": "8.3",
+    "testsEnvironment": false,
+    "themes": ["./toolkit"],
+    "plugins": [
+        "https://github.com/Hawaii-Interactive-CH/wordpress-toolkit-plugin/archive/refs/heads/main.zip"
+    ],
+    "config": {
+        "WP_DEBUG": true,
+        "WP_DEBUG_DISPLAY": true
+    }
+}

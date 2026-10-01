@@ -2,18 +2,18 @@
 
 namespace Toolkit\routes;
 
-use \WP_REST_Request;
-use \WP_REST_Response;
-use \WP_Error;
-
-
-$base_url = get_home_url();
-$app_name = sanitize_title(get_bloginfo('name'));
+// Prevent direct access.
+defined('ABSPATH') or exit;
 
 /**
- * Register API routes
+ * Register theme REST API routes
+ *
+ * @example
+ * register_rest_route(sanitize_title(get_bloginfo('name')) . '/v1', '/articles', [
+ *     'methods'             => 'GET',
+ *     'callback'            => fn() => \Toolkit\models\custom\Article::query()->find_all(),
+ *     'permission_callback' => '__return_true',
+ * ]);
  */
-
- add_action('rest_api_init', function() use ($app_name, $base_url) {
-
- });
+add_action('rest_api_init', function () {
+});

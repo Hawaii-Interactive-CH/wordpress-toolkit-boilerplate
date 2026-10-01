@@ -559,6 +559,20 @@ The theme displays an admin notice if the Toolkit plugin is not active.
 
 ---
 
+## Checks
+
+Run these after changing PHP templates, models or services:
+
+```bash
+composer lint        # php -l on every theme file
+composer phpstan     # PHPStan level 5 (WordPress, ACF Pro and Toolkit plugin stubs via Composer)
+npm run test:smoke   # crawls the main views of a running site, see tests/smoke.mjs
+```
+
+`test:smoke` targets wp-env (`npx wp-env start && npm run wp-env:setup`) by default; set `SMOKE_BASE_URL` to test another install. It fails on unexpected HTTP codes, PHP errors, a missing `<h1>` (template rendered nothing), listings without `<article>` and invalid JSON-LD. CI (`.github/workflows/ci.yml`) runs all three.
+
+---
+
 ## Key File Map
 
 | Purpose | Path |

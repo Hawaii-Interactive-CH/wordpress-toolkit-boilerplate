@@ -7,7 +7,7 @@ namespace Toolkit; ?>
 <footer class="footer">
   <?php wp_nav_menu([
       "theme_location" => "footer_menu",
-      "container" => false,
+      "container" => "",
   ]); ?>
 </footer>
 <?php wp_footer(); ?>

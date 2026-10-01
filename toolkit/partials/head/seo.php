@@ -83,7 +83,7 @@ if ($thumbnail_id) {
         $og_image        = esc_url($img_data[0]);
         $og_image_width  = (int) $img_data[1];
         $og_image_height = (int) $img_data[2];
-        $og_image_type   = wp_check_filetype($img_data[0])['type'] ?? '';
+        $og_image_type   = wp_check_filetype($img_data[0])['type'] ?: '';
     }
 }
 

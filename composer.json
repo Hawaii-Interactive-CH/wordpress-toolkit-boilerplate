@@ -1,0 +1,36 @@
+{
+    "name": "hawaii-interactive/wordpress-toolkit-boilerplate",
+    "description": "WordPress theme boilerplate built on the HI Theme Toolkit plugin",
+    "type": "wordpress-theme",
+    "license": "GPL-2.0-or-later",
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "hawaii-interactive/wordpress-toolkit-plugin",
+                "version": "dev-main",
+                "source": {
+                    "url": "https://github.com/Hawaii-Interactive-CH/wordpress-toolkit-plugin.git",
+                    "type": "git",
+                    "reference": "main"
+                }
+            }
+        }
+    ],
+    "require-dev": {
+        "hawaii-interactive/wordpress-toolkit-plugin": "dev-main",
+        "php-stubs/acf-pro-stubs": "^6.0",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "szepeviktor/phpstan-wordpress": "^2.0"
+    },
+    "scripts": {
+        "lint": "find toolkit -name '*.php' -not -path 'toolkit/public/*' -print0 | xargs -0 -n1 php -l > /dev/null",
+        "phpstan": "phpstan analyse --memory-limit=1G"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    }
+}

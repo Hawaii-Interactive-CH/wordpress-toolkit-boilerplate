@@ -43,7 +43,7 @@ namespace Toolkit;
       <nav id="main-nav" class="main-nav" aria-label="<?= esc_attr__("Main menu", "toolkit") ?>">
         <?php wp_nav_menu([
             "theme_location" => "main_menu",
-            "container" => false,
+            "container" => "",
         ]); ?>
       </nav>
       <button type="button" class="hamburger" aria-controls="main-nav" aria-expanded="false" aria-label="<?= esc_attr__("Menu", "toolkit") ?>">

@@ -41,6 +41,25 @@ Il faut installer le plugin [wordpress-toolkit-plugin](https://github.com/Hawaii
 
 A noter que le projet utilise vitejs pour compiler les assets. Il est possible de modifier le fichier `vite.config.js` pour ajouter des fonctionnalités supplémentaires.
 
+### Tests
+
+La CI GitHub Actions (`.github/workflows/ci.yml`) lance les mêmes vérifications à chaque push et pull request.
+
+- `composer install` puis `composer lint` : vérifie la syntaxe de tous les fichiers PHP du thème
+- `composer phpstan` : analyse statique (PHPStan niveau 5, avec les stubs WordPress, ACF Pro et le plugin Toolkit)
+- `npm run test:smoke` : parcourt les pages principales (accueil, article, page, archives, recherche, 404, CPT et taxonomies) et échoue en cas de code HTTP inattendu, d'erreur PHP, de page vide ou de JSON-LD invalide
+
+Le test de fumée tourne par défaut sur `wp-env` (Docker requis) :
+
+```bash
+npm run build
+npx wp-env start
+npm run wp-env:setup
+npm run test:smoke
+```
+
+Il peut aussi tourner sur un site Local existant : `SMOKE_BASE_URL=http://localhost:10220 npm run test:smoke`
+
 ### Developpement
 
 Local WP compile automatiquement vite en mode dev. Pour les autres environements, il faut ajouter dans le `wp-config.php`:

@@ -4,7 +4,7 @@
 namespace Toolkit;
 
 $children = get_pages([
-    "child_of" => $post->ID,
+    "child_of" => get_queried_object_id(),
     "sort_column" => "menu_order",
 ]);
 if ($children) {

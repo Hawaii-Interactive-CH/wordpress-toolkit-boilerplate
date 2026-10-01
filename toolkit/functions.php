@@ -66,6 +66,9 @@ spl_autoload_register('Toolkit\\toolkit_autoloader');
     });
 }
 
+// Theme REST API routes
+require_once TOOLKIT_ACTIVE_THEME_PATH . '/routes/api.php';
+
 // Customizer: runtime CSS custom properties
 \Toolkit\utils\CustomizerService::register();
 

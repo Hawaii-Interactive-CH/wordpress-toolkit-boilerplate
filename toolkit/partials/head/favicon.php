@@ -2,6 +2,9 @@
 
 namespace Toolkit\partials\head;
 
+/** @var string|null $color Tile and theme color (optional). */
+$color = $color ?? '#ffffff';
+
 $dir = get_template_directory_uri() . "/static/images/favicon";
 $dir_exists = file_exists(get_template_directory() . "/static/images/favicon");
 
