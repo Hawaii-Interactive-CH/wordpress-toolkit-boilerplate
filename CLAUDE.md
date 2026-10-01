@@ -615,3 +615,5 @@ npm run test:smoke   # crawls the main views of a running site, see tests/smoke.
 | Design tokens | `src/scss/partials/base/_variables.scss` |
 | Vite config | `vite.config.js` |
 | Font generation | `generate_fonts.js` / `convert_fonts.sh` |
+| New project setup (`npm run init`) | `scripts/init.mjs` |
+| Smoke test / wp-env setup | `tests/smoke.mjs` / `tests/wp-env-setup.sh` |

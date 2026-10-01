@@ -9,6 +9,7 @@
         "not ie <= 11"
     ],
     "scripts": {
+        "init": "node scripts/init.mjs",
         "dev": "vite",
         "watch": "vite",
         "production": "APP_ENV=production vite build --mode production",

@@ -6,7 +6,8 @@
 
 - PHP 8.1
 - Dernière version de Wordpress
-- asdf, asdf-nodejs : https://atoz.hawaii.do/development/asdf/
+- asdf, asdf-nodejs : https://atoz.hawaii.do/development/asdf/ (la version de Node est fixée dans `.tool-versions`)
+- Composer
 
 ### Installation
 
@@ -20,10 +21,41 @@ Il faut installer le plugin [wordpress-toolkit-plugin](https://github.com/Hawaii
 2. Décompresser et copier les fichiers dans votre dossier web.
 3. Vider le dossier des thèmes `./wp-content/themes`
 4. Cloner ce dépot git dans votre dossier de thème.
-5. Supprimer le dossier `.git` et crer un nouveau dépot git avec `git init`
-6. Créer un nouveau projet sur https://git.hawai.li/ et suivre les instructions pour lier a ce dépôt
-7. Installer les dépendances `npm install` et `composer install` (outils PHP et autocomplétion des classes du plugin dans l'éditeur)
-8. Copier `.env.example` to `.env` et configurer les variables d'environnement si besoin
+5. Lancer `npm run init` (voir ci-dessous) et répondre « o » pour créer un nouveau dépôt git.
+6. Créer le dépôt du projet sur GitHub, puis le lier et pousser le premier commit :
+   ```bash
+   git remote add origin git@github.com:<organisation>/<projet>.git
+   git add -A
+   git commit -m "Initial commit"
+   git push -u origin main
+   ```
+7. Activer le thème, le plugin WordPress Toolkit et ACF Pro dans l'administration WordPress.
+
+#### Script d'initialisation
+
+`npm run init` prépare un nouveau projet à partir du boilerplate (attention : `npm init` sans `run` est une commande npm différente). Il demande le nom du site, la description du thème, et s'il faut repartir d'un historique git vierge, puis :
+
+- renseigne `Theme Name`, `Description` et remet la `Version` à `1.0.0` dans `toolkit/style.css` ;
+- renomme le projet dans `package.json` et `composer.json` (à partir du nom du site, ex. « Fondation École » → `fondation-ecole`) ;
+- crée `.env` à partir de `.env.example` s'il n'existe pas ;
+- si demandé, supprime le dossier `.git` du boilerplate et crée un nouveau dépôt (sans commit) ;
+- lance `npm install` et `composer install`.
+
+Le text domain reste `toolkit` : WordPress recommande qu'il corresponde au nom du dossier du thème, qui ne change pas.
+
+Le script peut être relancé : il propose par défaut les valeurs déjà présentes dans `style.css`. Pour l'utiliser sans questions :
+
+```bash
+npm run init -- --name="Fondation École" --description="Site de la fondation" --git-init --yes
+```
+
+| Option | Effet |
+|---|---|
+| `--name="…"` | Nom du site |
+| `--description="…"` | Description du thème |
+| `--git-init` | Remplace l'historique git du boilerplate par un nouveau dépôt |
+| `--skip-install` | Ne lance pas `npm install` ni `composer install` |
+| `--yes` | Ne pose aucune question (options ci-dessus, sinon valeurs par défaut) |
 
 #### Projet existant
 
