@@ -22,7 +22,7 @@ Il faut installer le plugin [wordpress-toolkit-plugin](https://github.com/Hawaii
 4. Cloner ce dépot git dans votre dossier de thème.
 5. Supprimer le dossier `.git` et crer un nouveau dépot git avec `git init`
 6. Créer un nouveau projet sur https://git.hawai.li/ et suivre les instructions pour lier a ce dépôt
-7. Installer les dépendances `npm install`
+7. Installer les dépendances `npm install` et `composer install` (outils PHP et autocomplétion des classes du plugin dans l'éditeur)
 8. Copier `.env.example` to `.env` et configurer les variables d'environnement si besoin
 
 #### Projet existant
@@ -31,7 +31,7 @@ Il faut installer le plugin [wordpress-toolkit-plugin](https://github.com/Hawaii
 2. Décompresser et copier les fichiers dans votre dossier web.
 3. Vider le dossier des thèmes `./wp-content/themes`
 4. Cloner le dépot git du projet dans votre dossier de thème.
-5. Installer les dépendances `npm install`
+5. Installer les dépendances `npm install` et `composer install` (outils PHP et autocomplétion des classes du plugin dans l'éditeur)
 6. Copier `.env.example` to `.env` et configurer les variables d'environnement si besoin
 
 ### Commandes
@@ -62,13 +62,28 @@ Il peut aussi tourner sur un site Local existant : `SMOKE_BASE_URL=http://localh
 
 ### Developpement
 
-Local WP compile automatiquement vite en mode dev. Pour les autres environements, il faut ajouter dans le `wp-config.php`:
+Le plugin charge les fichiers depuis le serveur Vite (`npm run dev`) quand il répond et que le site est en environnement `local` (c'est le cas avec Local) ou en `WP_DEBUG`. Sinon, il charge les fichiers compilés par `npm run build`. Pour activer le debug dans les autres environnements, il faut ajouter dans le `wp-config.php`:
 
 ```php
 define( 'WP_DEBUG', true );
 define( 'WP_DEBUG_LOG', true );
 define( 'WP_DEBUG_DISPLAY', false );
 ```
+
+#### Autocomplétion PHP (Intelephense)
+
+Le thème utilise des classes du plugin (`Toolkit\models\PostType`, `Media`, `QueryBuilder`…), des fonctions WordPress et des fonctions ACF. Pour que VS Code les connaisse :
+
+1. Installer l'extension [PHP Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client) et désactiver l'extension PHP intégrée de VS Code (« PHP Language Features ») pour éviter les doublons.
+2. Lancer `composer install` à la racine du projet. Composer place dans `vendor/` :
+   - le plugin Toolkit (`vendor/hawaii-interactive/wordpress-toolkit-plugin`, branche `main` sur GitHub) ;
+   - les stubs WordPress (`vendor/php-stubs/wordpress-stubs`) ;
+   - les stubs ACF Pro (`vendor/php-stubs/acf-pro-stubs`).
+3. Intelephense indexe `vendor/` automatiquement, sans configuration. Si les classes ne sont pas reconnues, lancer la commande « Intelephense: Index workspace » dans VS Code.
+
+Pour récupérer la dernière version du plugin après un changement sur GitHub : `composer reinstall hawaii-interactive/wordpress-toolkit-plugin`, puis réindexer.
+
+Ces mêmes dépendances servent à PHPStan (voir [Tests](#tests)). `vendor/` n'est pas versionné.
 
 #### Custom Post Type
 

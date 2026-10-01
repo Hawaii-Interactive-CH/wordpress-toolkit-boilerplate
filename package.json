@@ -9,8 +9,8 @@
         "not ie <= 11"
     ],
     "scripts": {
-        "dev": "node autoload.js && vite",
-        "watch": "node autoload.js && vite",
+        "dev": "vite",
+        "watch": "vite",
         "production": "APP_ENV=production vite build --mode production",
         "build": "APP_ENV=production vite build --mode production",
         "preview": "vite preview",
