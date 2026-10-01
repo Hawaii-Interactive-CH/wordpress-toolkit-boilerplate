@@ -8,7 +8,9 @@ $children = get_pages([
     "sort_column" => "menu_order",
 ]);
 if ($children) {
-    return wp_redirect(get_permalink($children[0]->ID));
+    wp_redirect(get_permalink($children[0]->ID));
+    exit;
 }
 
-return wp_redirect(home_url());
+wp_redirect(home_url());
+exit;

@@ -8,6 +8,11 @@ defined( 'ABSPATH' ) or exit;
 define( 'TOOLKIT_ACTIVE_THEME_PATH', get_template_directory() );
 define( 'TOOLKIT_ACTIVE_THEME_URL', get_template_directory_uri() );
 
+// Plugin versions before 3.0 only define WP_TOOLKIT_DIR.
+if ( ! defined( 'HI_TOOLKIT_DIR' ) && defined( 'WP_TOOLKIT_DIR' ) ) {
+    define( 'HI_TOOLKIT_DIR', WP_TOOLKIT_DIR );
+}
+
 function toolkit_autoloader($class) {
     // Base namespace for the Toolkit.
     $baseNamespace = 'Toolkit';
@@ -25,8 +30,8 @@ function toolkit_autoloader($class) {
         $possiblePaths[] = TOOLKIT_ACTIVE_THEME_PATH . DIRECTORY_SEPARATOR . $relativeFilePath;
 
         // Check the plugin directory if the class is not found in the theme.
-        if (defined('WP_TOOLKIT_DIR')) {
-            $possiblePaths[] = WP_TOOLKIT_DIR . $relativeFilePath;
+        if (defined('HI_TOOLKIT_DIR')) {
+            $possiblePaths[] = HI_TOOLKIT_DIR . $relativeFilePath;
         }
 
         // Attempt to require the class file from the first matching path.
@@ -47,16 +52,18 @@ spl_autoload_register('Toolkit\\toolkit_autoloader');
  * Could also be done from the plugin 
  */
 
- if (defined('WP_TOOLKIT_DIR')) {
+ if (defined('HI_TOOLKIT_DIR')) {
 
     // custom post type
     $toRegister = [
         ["\\Toolkit\\models\\Config", 'register'],
     ];
 
-    foreach ($toRegister as $register) {
-        $register();
-    }
+    add_action('acf/init', function () use ($toRegister) {
+        foreach ($toRegister as $register) {
+            $register();
+        }
+    });
 }
 
 // Customizer: runtime CSS custom properties
@@ -74,7 +81,7 @@ register_nav_menus([
 const FULL_SIZE = 99999;
 $size = null;
 
-if (defined('WP_TOOLKIT_DIR')) {
+if (defined('HI_TOOLKIT_DIR')) {
     $size = "\\Toolkit\\utils\\Size"::get_instance();
 
     $size->init();
@@ -101,7 +108,7 @@ if (defined('WP_TOOLKIT_DIR')) {
 
 add_action("admin_init", function () {
     // Check if the WordPress Toolkit Plugin is active before continuing
-    if (!defined('WP_TOOLKIT_DIR')) {
+    if (!defined('HI_TOOLKIT_DIR')) {
         // Alert to install the WordPress Toolkit Plugin
         add_action("admin_notices", function () {
             ?>
@@ -117,7 +124,7 @@ add_action("admin_init", function () {
         });
     }
 
-    if (defined('WP_TOOLKIT_DIR')) {
+    if (defined('HI_TOOLKIT_DIR')) {
     // add new size for wysiwyg
         add_filter("image_size_names_choose", function ($sizes) {
             // "size_name" => "Label"

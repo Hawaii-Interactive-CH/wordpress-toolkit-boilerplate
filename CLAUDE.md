@@ -435,7 +435,7 @@ echo render_partial('head/seo', ['model' => $model]);
 
 ### Dev / production detection
 
-`AssetService` checks `WP_DEBUG` to decide between the Vite dev server (port `5173`) and the hashed production manifest at `toolkit/public/.vite/manifest.json`.
+The plugin's `AssetService` uses the Vite dev server (port `5173`) when `WP_ENVIRONMENT_TYPE === 'local'` (always the case in Local by Flywheel), or when `WP_DEBUG` is on and the dev server responds. Otherwise it loads the hashed production files listed in `toolkit/public/.vite/manifest.json`. The block editor stylesheet is loaded from the fixed path `toolkit/public/css/blocks.css`, so `vite.config.js` outputs that file without a hash.
 
 ```bash
 npm run dev    # starts Vite dev server with live PHP reload

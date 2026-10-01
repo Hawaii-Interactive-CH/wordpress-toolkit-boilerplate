@@ -55,6 +55,10 @@ export default defineConfig({
                 chunkFileNames: "js/[name].[hash].js",
                 assetFileNames: (assetInfo) => {
                     const fileName = assetInfo.names?.[0] || 'unknown';
+                    // The plugin enqueues the editor stylesheet from the fixed path public/css/blocks.css
+                    if (fileName === "blocks.css") {
+                        return "css/blocks.css";
+                    }
                     if (fileName.endsWith(".css")) {
                         return "css/[name].[hash].css";
                     }

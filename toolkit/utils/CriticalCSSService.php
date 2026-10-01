@@ -18,8 +18,8 @@ class CriticalCSSService
     public static function register(): void
     {
         add_action('wp_head', [self::class, 'inline_critical_css'], 1);
-        add_action('wp_head', [self::class, 'start_defer_buffer'],  4);
-        add_action('wp_head', [self::class, 'flush_defer_buffer'],  6);
+        add_action('wp_head', [self::class, 'start_defer_buffer'],  7);
+        add_action('wp_head', [self::class, 'flush_defer_buffer'],  8);
     }
 
     /**
@@ -38,8 +38,9 @@ class CriticalCSSService
     }
 
     /**
-     * Opens an output buffer just before AssetService emits its <link> tags
-     * (AssetService runs at priority 5).
+     * Opens an output buffer just before WordPress prints the enqueued
+     * <link> tags (wp_print_styles runs on wp_head at priority 8). The
+     * buffer is flushed by a callback registered later at the same priority.
      */
     public static function start_defer_buffer(): void
     {
@@ -102,7 +103,7 @@ class CriticalCSSService
             return null;
         }
 
-        $file_path = get_template_directory() . '/toolkit/public/' . $entry;
+        $file_path = get_template_directory() . '/public/' . $entry;
 
         if (!file_exists($file_path)) {
             return null;
@@ -117,7 +118,7 @@ class CriticalCSSService
      */
     private static function manifest_path(): ?string
     {
-        $path = get_template_directory() . '/toolkit/public/.vite/manifest.json';
+        $path = get_template_directory() . '/public/.vite/manifest.json';
 
         return file_exists($path) ? $path : null;
     }
