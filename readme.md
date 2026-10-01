@@ -6,7 +6,7 @@
 
 - PHP 8.1
 - Dernière version de Wordpress
-- asdf, asdf-nodejs : https://atoz.hawaii.do/development/asdf/ (la version de Node est fixée dans `.tool-versions`)
+- Node.js, dans la version fixée par `.tool-versions` (installable avec [asdf](https://asdf-vm.com/) et son plugin nodejs : `asdf install`)
 - Composer
 - Plugins WordPress : [wordpress-toolkit-plugin](https://github.com/Hawaii-Interactive-CH/wordpress-toolkit-plugin) (obligatoire) et ACF Pro (blocs, pages d'options, champs)
 
