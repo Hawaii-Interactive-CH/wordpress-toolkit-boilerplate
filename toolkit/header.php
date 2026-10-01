@@ -17,11 +17,13 @@ namespace Toolkit;
       "color" => "#ffffff",
   ]) ?>
 
-  <!-- SEO -->
-  <?= render_partial("head/seo") ?>
+  <?php if (!seo_plugin_active()) { ?>
+    <!-- SEO -->
+    <?= render_partial("head/seo") ?>
 
-  <!-- JSON-LD -->
-  <?= render_partial("head/jsonld") ?>
+    <!-- JSON-LD -->
+    <?= render_partial("head/jsonld") ?>
+  <?php } ?>
 
   <!-- JavaScript -->
   <script>

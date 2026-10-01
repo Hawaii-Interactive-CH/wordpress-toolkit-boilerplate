@@ -106,7 +106,7 @@ function check(page, response, html) {
         errors.push("listing without any <article>");
     }
 
-    const jsonLd = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    const jsonLd = html.match(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/);
     if (!jsonLd) {
         errors.push("missing JSON-LD");
     } else {

@@ -61,18 +61,24 @@ Available terminal methods: `find_all()`, `find_one()`, `find_by_id($id)`, `coun
 
 ### Responsive images
 
-Use `$model->thumbnail()` with a callback that receives a `Media` instance. Use `$media->picture()` to render the `<picture>` element:
+Use `$model->thumbnail()` with a callback that receives a `Media` instance. For a full-width image, use the `media/full-width` partial, which renders a `<picture>` with every registered size as width descriptors and lets the browser pick:
 
 ```php
 <?php $model->thumbnail(function (Media $media) {
-    echo '<figure>' . $media->picture([
-        ['size' => 'image-xl', 'size2x' => 'image-xl-2x', 'media' => '(min-width: 1281px)', 'sizes' => false],
-        ['size' => 'image-l',  'size2x' => 'image-l-2x',  'media' => '(max-width: 1280px)', 'sizes' => false],
-        ['size' => 'image-m',  'size2x' => 'image-m-2x',  'media' => '(max-width: 860px)',  'sizes' => false],
-        ['size' => 'image-s',  'size2x' => 'image-s-2x',  'media' => '(max-width: 400px)',  'sizes' => false],
-    ], '', true, false, 'image-xl') . '</figure>';
+    // 'lazy' => false for images above the fold
+    echo render_partial('media/full-width', ['media' => $media, 'lazy' => false]);
 }); ?>
 ```
+
+For other layouts, call `$media->picture()` directly with the sizes that match the rendered width (see `partials/content/card.php`):
+
+```php
+echo $media->picture([
+    ['srcset' => ['image-s' => '400w', 'image-m' => '860w', 'image-m-2x' => '1720w'], 'sizes' => '(max-width: 860px) 100vw, 860px'],
+], 'card__image', true, true, 'image-m');
+```
+
+If you use `media` queries instead, remember the browser takes the **first** matching `<source>`: order `max-width` sources from the smallest to the largest.
 
 **Registered image sizes** (defined in `toolkit/functions.php`):
 
@@ -428,6 +434,15 @@ echo render_partial('head/seo', ['model' => $model]);
 // loads: toolkit/partials/head/seo.php
 // $model is available as a local variable inside the partial
 ```
+
+Available partials:
+
+| Partial | Data | Purpose |
+|---|---|---|
+| `content/card` | `model` | Post card for listings (archive, search) |
+| `media/full-width` | `media`, `lazy` (default `true`) | Responsive full-width `<figure>` |
+| `head/seo`, `head/jsonld` | `model` (optional) | Meta tags and structured data. Skipped by `header.php` when an SEO plugin is active (`Toolkit\seo_plugin_active()`, filterable with `toolkit_seo_plugin_active`) |
+| `head/favicon` | `color` | Favicon links from `static/images/favicon` |
 
 ---
 

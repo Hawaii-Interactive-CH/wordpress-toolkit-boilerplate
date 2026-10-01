@@ -66,6 +66,21 @@ spl_autoload_register('Toolkit\\toolkit_autoloader');
     });
 }
 
+/**
+ * Whether an SEO plugin already prints meta tags and structured data, in which
+ * case the theme's head/seo and head/jsonld partials are skipped.
+ */
+function seo_plugin_active(): bool
+{
+    $active = defined('WPSEO_VERSION')                // Yoast SEO
+        || defined('RANK_MATH_VERSION')               // Rank Math
+        || defined('SEOPRESS_VERSION')                // SEOPress
+        || defined('AIOSEO_VERSION')                  // All in One SEO
+        || defined('THE_SEO_FRAMEWORK_VERSION');      // The SEO Framework
+
+    return (bool) apply_filters('toolkit_seo_plugin_active', $active);
+}
+
 // Theme REST API routes
 require_once TOOLKIT_ACTIVE_THEME_PATH . '/routes/api.php';
 

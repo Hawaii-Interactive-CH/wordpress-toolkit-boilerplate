@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-01T12:43:12+00:00\n"
+"POT-Creation-Date: 2026-10-01T12:56:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: toolkit\n"
@@ -35,28 +35,28 @@ msgstr ""
 msgid "Hawaii Interactive"
 msgstr ""
 
-#: functions.php:80
-#: header.php:43
+#: functions.php:98
+#: header.php:45
 msgid "Main menu"
 msgstr ""
 
-#: functions.php:81
+#: functions.php:99
 msgid "Footer menu"
 msgstr ""
 
-#: functions.php:118
+#: functions.php:136
 msgid "This theme requires the WordPress Toolkit Plugin."
 msgstr ""
 
-#: functions.php:119
+#: functions.php:137
 msgid "Missing plugin"
 msgstr ""
 
-#: functions.php:133
+#: functions.php:151
 msgid "Please install the WordPress Toolkit Plugin to use the Toolkit."
 msgstr ""
 
-#: header.php:49
+#: header.php:51
 msgid "Menu"
 msgstr ""
 
@@ -96,12 +96,26 @@ msgstr ""
 msgid "Back to the home page"
 msgstr ""
 
-#: templates/search.php:13
+#: templates/archive.php:21
+msgid "No content found."
+msgstr ""
+
+#. translators: %s: search query
+#: templates/search.php:12
+#, php-format
+msgid "Search results for “%s”"
+msgstr ""
+
+#: templates/search.php:15
 msgid "Your search"
 msgstr ""
 
-#: templates/search.php:16
+#: templates/search.php:17
 msgid "Search"
+msgstr ""
+
+#: templates/search.php:28
+msgid "No results. Try other keywords."
 msgstr ""
 
 #. Template Name of the theme

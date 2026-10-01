@@ -1,5 +1,3 @@
-# Copyright (C) 2026 Hawaii Interactive
-# This file is distributed under the same license as the Toolkit theme.
 msgid ""
 msgstr ""
 "Project-Id-Version: Toolkit 3.0.0\n"
@@ -8,11 +6,11 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Language: fr_FR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2026-10-01T12:42:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Language: fr_FR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: toolkit\n"
 
@@ -37,28 +35,28 @@ msgstr ""
 msgid "Hawaii Interactive"
 msgstr ""
 
-#: functions.php:80
-#: header.php:48
+#: functions.php:98
+#: header.php:45
 msgid "Main menu"
 msgstr "Menu principal"
 
-#: functions.php:81
+#: functions.php:99
 msgid "Footer menu"
 msgstr "Menu pied de page"
 
-#: functions.php:118
+#: functions.php:136
 msgid "This theme requires the WordPress Toolkit Plugin."
 msgstr "Ce thème nécessite le plugin WordPress Toolkit."
 
-#: functions.php:119
+#: functions.php:137
 msgid "Missing plugin"
 msgstr "Plugin manquant"
 
-#: functions.php:133
+#: functions.php:151
 msgid "Please install the WordPress Toolkit Plugin to use the Toolkit."
 msgstr "Veuillez installer le plugin WordPress Toolkit pour utiliser le Toolkit."
 
-#: header.php:50
+#: header.php:51
 msgid "Menu"
 msgstr "Menu"
 
@@ -98,11 +96,11 @@ msgstr "La page que vous recherchez n’existe pas."
 msgid "Back to the home page"
 msgstr "Revenir à la page d’accueil"
 
-#: templates/search.php:13
+#: templates/search.php:15
 msgid "Your search"
 msgstr "Votre recherche"
 
-#: templates/search.php:16
+#: templates/search.php:17
 msgid "Search"
 msgstr "Rechercher"
 
@@ -129,3 +127,17 @@ msgstr "Typographie"
 #: utils/CustomizerService.php:57
 msgid "Layout"
 msgstr "Mise en page"
+
+#: templates/archive.php:21
+msgid "No content found."
+msgstr "Aucun contenu trouvé."
+
+#. translators: %s: search query
+#: templates/search.php:12
+#, php-format
+msgid "Search results for “%s”"
+msgstr "Résultats de recherche pour « %s »"
+
+#: templates/search.php:28
+msgid "No results. Try other keywords."
+msgstr "Aucun résultat. Essayez d’autres mots-clés."
