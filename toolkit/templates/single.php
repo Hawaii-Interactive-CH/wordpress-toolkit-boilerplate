@@ -3,12 +3,12 @@
 namespace Toolkit;
 
 use Toolkit\models\Media;
-use Toolkit\models\Post;
+use Toolkit\models\PostType;
 
 get_header();
 ?>
 
-<?php Post::current(function (Post $model) {
+<?php (function (PostType $model) {
     ?>
 
     <section>
@@ -57,6 +57,6 @@ get_header();
     </section>
 
 <?php
-}); ?>
+})(PostType::new(get_post_type(), get_queried_object_id())); ?>
 
 <?php get_footer(); ?>

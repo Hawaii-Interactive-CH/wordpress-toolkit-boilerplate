@@ -113,11 +113,16 @@ class CriticalCSSService
     }
 
     /**
-     * Returns the absolute path to the Vite manifest, or null when it doesn't
-     * exist (i.e. in development mode where Vite serves files directly).
+     * Returns the absolute path to the Vite manifest, or null in development
+     * mode where Vite serves files directly (a stale build may still exist).
+     * AssetService::is_dev_mode() is private before plugin 3.0.
      */
     private static function manifest_path(): ?string
     {
+        if (is_callable([AssetService::class, 'is_dev_mode']) && AssetService::is_dev_mode()) {
+            return null;
+        }
+
         $path = get_template_directory() . '/public/.vite/manifest.json';
 
         return file_exists($path) ? $path : null;

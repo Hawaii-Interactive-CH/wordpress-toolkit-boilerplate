@@ -106,6 +106,18 @@ if (defined('HI_TOOLKIT_DIR')) {
     });
 }
 
+// Templates depend on the plugin (render_partial, base models): show a
+// message instead of a fatal error on the front end when it is missing.
+add_action("template_redirect", function () {
+    if (!defined('HI_TOOLKIT_DIR')) {
+        wp_die(
+            esc_html__("This theme requires the WordPress Toolkit Plugin.", "wordpress-toolkit-boilerplate"),
+            esc_html__("Missing plugin", "wordpress-toolkit-boilerplate"),
+            ["response" => 503]
+        );
+    }
+});
+
 add_action("admin_init", function () {
     // Check if the WordPress Toolkit Plugin is active before continuing
     if (!defined('HI_TOOLKIT_DIR')) {

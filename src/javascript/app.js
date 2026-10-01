@@ -2,8 +2,6 @@
 import "@scss/app.scss"; // Import global SCSS
 // import "@utils/Polyfills";
 import "@hooks/mobileNav";
-// import "@hooks/swiper";
-// import "@hooks/gsap";
 
 // Only import React/Vue when you actually have components to render
 // Uncomment these lines when you add React/Vue components:
