@@ -1,6 +1,8 @@
+import Swiper from "swiper/bundle";
+
 let gallery = document.querySelector(".gallery");
 if (gallery) {
-    const swiper = new Swiper(".gallery", {
+    new Swiper(".gallery", {
         speed: 1000,
         autoplay: {
             delay: 2000,

@@ -1,8 +1,4 @@
-import React from "react";
-
-export default function Demo({ data }) {
-    const {} = data;
-
+export default function Demo() {
     return (
         <>
             <h1>React Demo from Hawaii Toolkit</h1>

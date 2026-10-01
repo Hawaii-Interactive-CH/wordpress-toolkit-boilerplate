@@ -1,7 +1,7 @@
 import { HTTPRequest } from "@utils/HTTPRequest";
 
 export default new HTTPRequest(
-    `${toolkit.base_url}/gravityformsapi`,
+    `${window.baseUrl}/gravityformsapi`,
     {},
     { cache: "no-cache" },
 );
