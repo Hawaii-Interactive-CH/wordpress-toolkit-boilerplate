@@ -102,6 +102,9 @@ const description = args.description ?? (await ask("Description du thème", defa
 const gitInit = args["git-init"] ?? (await confirm("Supprimer l'historique git du boilerplate et créer un nouveau dépôt ?"));
 rl?.close();
 
+// Values go into the style.css header comment: no "*/" nor line breaks
+const header = (value) => value.replace(/\*\//g, "").replace(/[\r\n]+/g, " ").trim();
+
 const slug = slugify(name);
 if (!slug) {
     console.error("Nom invalide.");
@@ -112,8 +115,8 @@ console.log("");
 
 update("toolkit/style.css", (css) =>
     css
-        .replace(/^Theme Name:.*$/m, `Theme Name: ${name}`)
-        .replace(/^Description:.*$/m, `Description: ${description || name}`)
+        .replace(/^Theme Name:.*$/m, `Theme Name: ${header(name)}`)
+        .replace(/^Description:.*$/m, `Description: ${header(description || name)}`)
         .replace(/^Version:.*$/m, "Version: 1.0.0"),
 );
 

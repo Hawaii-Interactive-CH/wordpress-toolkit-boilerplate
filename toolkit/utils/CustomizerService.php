@@ -105,7 +105,7 @@ class CustomizerService
         $lines = [];
 
         foreach (self::settings() as $key => $setting) {
-            $value = get_theme_mod("toolkit_{$key}", $setting['default']);
+            $value = self::value($key, $setting);
 
             if ($value === '' || $value === null) {
                 continue;
@@ -168,7 +168,7 @@ class CustomizerService
             $palette[] = [
                 'slug'  => str_replace('color_', '', $key),
                 'name'  => __($setting['label'], 'toolkit'),
-                'color' => get_theme_mod("toolkit_{$key}", $setting['default']),
+                'color' => self::value($key, $setting) ?: $setting['default'],
             ];
         }
 
@@ -197,6 +197,23 @@ class CustomizerService
         }
 
         wp_add_inline_script('customize-preview', $js);
+    }
+
+    /**
+     * Returns the saved theme mod, sanitized again: values printed in <style> tags
+     * may have been saved outside the Customizer (WP-CLI, imports, other code).
+     */
+    private static function value(string $key, array $setting): ?string
+    {
+        $value = get_theme_mod("toolkit_{$key}", $setting['default']);
+
+        if ($value === '' || $value === null) {
+            return null;
+        }
+
+        return $setting['type'] === 'color'
+            ? sanitize_hex_color((string) $value)
+            : self::sanitize_number($value, $setting);
     }
 
     private static function sanitize_number(mixed $value, array $setting): string

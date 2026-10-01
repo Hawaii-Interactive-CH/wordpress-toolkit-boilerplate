@@ -27,9 +27,9 @@ namespace Toolkit;
 
   <!-- JavaScript -->
   <script>
-  window.baseUrl = "<?= get_home_url() ?>";
-  window.appName = "<?= sanitize_title(get_bloginfo("name")) ?>";
-  window.apiUrl = "<?= get_rest_url() ?>";
+  window.baseUrl = <?= wp_json_encode(get_home_url(), JSON_HEX_TAG | JSON_UNESCAPED_SLASHES) ?>;
+  window.appName = <?= wp_json_encode(sanitize_title(get_bloginfo("name")), JSON_HEX_TAG) ?>;
+  window.apiUrl = <?= wp_json_encode(get_rest_url(), JSON_HEX_TAG | JSON_UNESCAPED_SLASHES) ?>;
   </script>
 
   <?php wp_head(); ?>
