@@ -38,18 +38,19 @@ namespace Toolkit;
   <header class="header header--horizontal">
     <div class="row">
       <div id="logo">
-        <a href="<?= home_url() ?>">Logo</a>
+        <a href="<?= esc_url(home_url('/')) ?>"><?= esc_html(get_bloginfo("name")) ?></a>
       </div>
-      <?php wp_nav_menu([
-          "theme_location" => "main_menu",
-          "container" => "nav",
-          "container_class" => "main-nav",
-      ]); ?>
-      <div class="hamburger">
+      <nav id="main-nav" class="main-nav" aria-label="<?= esc_attr__("Main menu", "toolkit") ?>">
+        <?php wp_nav_menu([
+            "theme_location" => "main_menu",
+            "container" => false,
+        ]); ?>
+      </nav>
+      <button type="button" class="hamburger" aria-controls="main-nav" aria-expanded="false" aria-label="<?= esc_attr__("Menu", "toolkit") ?>">
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
     </div>
   </header>
 

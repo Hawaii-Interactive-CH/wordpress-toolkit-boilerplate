@@ -73,10 +73,14 @@ spl_autoload_register('Toolkit\\toolkit_autoloader');
 \Toolkit\utils\CriticalCSSService::register();
 
 // register menu
-register_nav_menus([
-    "main_menu" => "Menu principal",
-    "footer_menu" => "Menu pied de page"
-]);
+add_action("init", function () {
+    load_theme_textdomain("toolkit", TOOLKIT_ACTIVE_THEME_PATH . "/languages");
+
+    register_nav_menus([
+        "main_menu" => __("Main menu", "toolkit"),
+        "footer_menu" => __("Footer menu", "toolkit"),
+    ]);
+});
 
 const FULL_SIZE = 99999;
 $size = null;
@@ -111,8 +115,8 @@ if (defined('HI_TOOLKIT_DIR')) {
 add_action("template_redirect", function () {
     if (!defined('HI_TOOLKIT_DIR')) {
         wp_die(
-            esc_html__("This theme requires the WordPress Toolkit Plugin.", "wordpress-toolkit-boilerplate"),
-            esc_html__("Missing plugin", "wordpress-toolkit-boilerplate"),
+            esc_html__("This theme requires the WordPress Toolkit Plugin.", "toolkit"),
+            esc_html__("Missing plugin", "toolkit"),
             ["response" => 503]
         );
     }
@@ -128,7 +132,7 @@ add_action("admin_init", function () {
                 <p>
                     <?php _e(
                         "Please install the WordPress Toolkit Plugin to use the Toolkit.",
-                        "wordpress-toolkit-boilerplate"
+                        "toolkit"
                     ); ?>
                 </p>
             </div>

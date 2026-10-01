@@ -8,12 +8,12 @@ get_header();
 ?>
 
 <div class="search-query">
-    <form action="<?= home_url() ?>">
+    <form action="<?= esc_url(home_url('/')) ?>" role="search">
         <div class="input-wrapper">
-            <label for="search">Votre recherche</label>
+            <label for="search"><?= esc_html__('Your search', 'toolkit') ?></label>
             <h1>
-                <input name="s" id="search" type="text" value="<?php the_search_query(); ?>">
-                <input id="submit" type="submit" value="">
+                <input name="s" id="search" type="search" value="<?php the_search_query(); ?>">
+                <input id="submit" type="submit" value="" aria-label="<?= esc_attr__('Search', 'toolkit') ?>">
             </h1>
         </div>
     </form>

@@ -1,5 +1,5 @@
 <?php
-/* Template Name: Redirection page enfant */
+/* Template Name: Redirect to first child page */
 
 namespace Toolkit;
 

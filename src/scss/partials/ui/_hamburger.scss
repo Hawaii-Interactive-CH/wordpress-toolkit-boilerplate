@@ -6,6 +6,10 @@
 .hamburger {
     display: none;
     position: relative;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
     cursor: pointer;
     width: 2.4em;
     height: 1.6em;

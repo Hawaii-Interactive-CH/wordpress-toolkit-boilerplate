@@ -13,8 +13,8 @@ $dir_exists = file_exists(get_template_directory() . "/static/images/favicon");
     <link rel="shortcut icon" href="<?= $dir ?>/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="<?= $dir ?>/apple-touch-icon.png" />
     <link rel="manifest" href="<?= $dir ?>/site.webmanifest">
-    <meta name="apple-mobile-web-app-title" content="Transparency and Truth" />
-    <meta name="msapplication-TileColor" content="<?= $color ?>">
+    <meta name="apple-mobile-web-app-title" content="<?= esc_attr(get_bloginfo("name")) ?>" />
+    <meta name="msapplication-TileColor" content="<?= esc_attr($color) ?>">
     <meta name="msapplication-config" content="<?= $dir ?>/browserconfig.xml">
-    <meta name="theme-color" content="<?= $color ?>">
+    <meta name="theme-color" content="<?= esc_attr($color) ?>">
 <?php } ?>
