@@ -1,4 +1,3 @@
-import { createApp, h } from "vue";
 /**
  * Import components dynamically
  * This allows us to only load the components we need on the page
@@ -13,32 +12,17 @@ const componentImports = {
 };
 
 /**
- * Render components by looking the DOM for their root element
- * Look for id="component-name" and render the component corresponding to the name
+ * Look for id="component-name" in the page. Vue itself is only downloaded
+ * when at least one root element exists, so pages without components stay light.
  */
-async function renderComponent(componentId, loadComponent) {
-    
-  const element = document.getElementById(componentId);
+const roots = Object.entries(componentImports).filter(([id]) =>
+  document.getElementById(id),
+);
 
-  if (element) {
-    // load component
-    const data = element.dataset;
-    const { default: Component } = await loadComponent();
-
-    const app = createApp({
-        render: () => h(Component, { data }),
+if (roots.length) {
+  import("./render.js").then(({ renderComponent }) => {
+    roots.forEach(([id, loadComponent]) => {
+      renderComponent(document.getElementById(id), loadComponent);
     });
-    app.mount(element);
-  }
+  });
 }
-
-/**
- * Iterate over the component IDs and render them if their root element exists
- * This allows us to only load the components we need on the page
- */
-Object.entries(componentImports).forEach(([id, loadComponent]) => {
-  if (document.getElementById(id)) {
-    // console.info(`Rendering ${id} component`);
-    renderComponent(id, loadComponent);
-  }
-});

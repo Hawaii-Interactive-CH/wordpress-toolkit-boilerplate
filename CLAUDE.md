@@ -477,7 +477,9 @@ import '@utils/HttpRequest';
 
 ### React / Vue
 
-Both plugins are configured in `vite.config.js`. React is active by default via `src/javascript/react/main.jsx`. Vue is available but commented out in `app.js`. Mount components on `data-component` attributes or dedicated container elements (e.g. `<div id="demo-react-toolkit">`).
+Both plugins are configured in `vite.config.js`. React is active by default via `src/javascript/react/main.jsx`. Vue is available but commented out in `app.js`.
+
+Register components in the `componentImports` map of `main.jsx` (or `vue/main.js`), keyed by the id of their root element (e.g. `<div id="demo-react-toolkit">`). The root element's `data-*` attributes are passed as the `data` prop. The framework runtime lives in `render.jsx` / `render.js` and is only downloaded on pages that contain at least one registered root, so `app.js` stays small.
 
 ---
 
